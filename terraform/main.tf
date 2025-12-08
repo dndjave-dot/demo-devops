@@ -1,21 +1,22 @@
 terraform {
   required_providers {
     docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0"
+      source = "kreuzwerker/docker"
     }
   }
 }
 
 provider "docker" {}
 
-resource "docker_image" "nginx" {
-  name = "nginx:alpine"
+# Utilise une image déjà buildée
+resource "docker_image" "app" {
+  name = "test-image"
 }
 
-resource "docker_container" "web" {
-  name  = "nginx-container"
-  image = docker_image.nginx.image_id
+# Crée le conteneur à partir de l'image existante
+resource "docker_container" "app_container" {
+  name  = "demo-devops-container"
+  image = docker_image.app.name
 
   ports {
     internal = 80
